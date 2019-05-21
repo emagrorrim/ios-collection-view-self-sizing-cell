@@ -22,8 +22,8 @@ class ViewController: UIViewController {
     super.viewDidLoad()
     let layout = collectionView.collectionViewLayout as! MyFlowLayout
     layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-    collectionView.register(MyCollectionViewCell.self, forCellWithReuseIdentifier: "MyCollectionViewCell")
-
+//    collectionView.register(MyCollectionViewCell.self, forCellWithReuseIdentifier: "MyCollectionViewCell")
+    collectionView.register(UINib(nibName: "MyCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "MyCollectionViewCell")
     collectionView.delegate = self
     collectionView.dataSource = self
 

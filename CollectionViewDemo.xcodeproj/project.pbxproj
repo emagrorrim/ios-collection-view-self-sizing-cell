@@ -14,6 +14,7 @@
 		7C1BB8801DF553D1002A2D96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C1BB87E1DF553D1002A2D96 /* LaunchScreen.storyboard */; };
 		7C3259F32292CBA200BCE918 /* MyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3259F12292CBA200BCE918 /* MyCollectionViewCell.swift */; };
 		7C3259F62292F31400BCE918 /* FakeDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3259F52292F31400BCE918 /* FakeDataProvider.swift */; };
+		7C325A0E22939C0400BCE918 /* MyCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C325A0D22939C0400BCE918 /* MyCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		7C1BB8811DF553D1002A2D96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C3259F12292CBA200BCE918 /* MyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCollectionViewCell.swift; sourceTree = "<group>"; };
 		7C3259F52292F31400BCE918 /* FakeDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDataProvider.swift; sourceTree = "<group>"; };
+		7C325A0D22939C0400BCE918 /* MyCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				7C1BB8751DF553D1002A2D96 /* AppDelegate.swift */,
 				7C1BB8771DF553D1002A2D96 /* ViewController.swift */,
 				7C3259F12292CBA200BCE918 /* MyCollectionViewCell.swift */,
+				7C325A0D22939C0400BCE918 /* MyCollectionViewCell.xib */,
 				7C1BB8791DF553D1002A2D96 /* Main.storyboard */,
 				7C1BB87C1DF553D1002A2D96 /* Assets.xcassets */,
 				7C1BB87E1DF553D1002A2D96 /* LaunchScreen.storyboard */,
@@ -132,6 +135,7 @@
 			files = (
 				7C1BB8801DF553D1002A2D96 /* LaunchScreen.storyboard in Resources */,
 				7C1BB87D1DF553D1002A2D96 /* Assets.xcassets in Resources */,
+				7C325A0E22939C0400BCE918 /* MyCollectionViewCell.xib in Resources */,
 				7C1BB87B1DF553D1002A2D96 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
