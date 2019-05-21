@@ -42,7 +42,8 @@ class MyCollectionViewCell: UICollectionViewCell {
   }
 
   override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-    layoutAttributes.size = contentView.systemLayoutSizeFitting(CGSize(width: cellWidth, height: 0), withHorizontalFittingPriority: .required, verticalFittingPriority: .defaultLow)
+//    layoutAttributes.size = contentView.systemLayoutSizeFitting(CGSize(width: cellWidth, height: 0), withHorizontalFittingPriority: .required, verticalFittingPriority: .defaultLow)
+    layoutAttributes.size = label.sizeThatFits(CGSize(width: cellWidth, height: 0))
     if isExpanded {
       layoutAttributes.size.height += 100
     }

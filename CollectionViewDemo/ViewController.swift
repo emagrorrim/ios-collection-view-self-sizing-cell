@@ -59,7 +59,7 @@ class ViewController: UIViewController {
       self.data.append(contentsOf: DataProvider.data.map(Model.init))
       DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
         self.collectionView.reloadSections(IndexSet(arrayLiteral: 0))
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
           self.isLoading = false
         }
       }
