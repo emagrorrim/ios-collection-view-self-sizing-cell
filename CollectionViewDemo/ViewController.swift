@@ -6,8 +6,14 @@ import UIKit
 
 struct Model {
   let name: String
+  var isExpanded: Bool = false
+
+  init(name: String) {
+    self.name = name
+  }
 }
 
+// To add break point, no need a custom layout
 class MyFlowLayout: UICollectionViewFlowLayout {
   override func invalidateLayout() {
     super.invalidateLayout()
@@ -22,10 +28,10 @@ class ViewController: UIViewController {
     super.viewDidLoad()
     let layout = collectionView.collectionViewLayout as! MyFlowLayout
     layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-//    collectionView.register(MyCollectionViewCell.self, forCellWithReuseIdentifier: "MyCollectionViewCell")
     collectionView.register(UINib(nibName: "MyCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "MyCollectionViewCell")
     collectionView.delegate = self
     collectionView.dataSource = self
+    collectionView.bounces = false
 
     let refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
@@ -62,16 +68,6 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-//  func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//    let itemCount = collectionView.numberOfItems(inSection: 0)
-//    if indexPath.item + 1 >= itemCount && itemCount > 0 {
-//      data = data + DataProvider.data
-//      DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-//        self?.collectionView.reloadData()
-//      }
-//    }
-//  }
-
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return data.count
   }
@@ -83,6 +79,11 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     cell.configureWidth(with: collectionView.bounds.width)
     cell.label.text = "\(indexPath.item) \n" + data[indexPath.item].name
     cell.contentView.backgroundColor = .cyan
+    cell.isExpanded = data[indexPath.item].isExpanded
+    cell.didUpdate = { [weak self] in
+      self?.collectionView.reloadSections(IndexSet(arrayLiteral: 0))
+      self?.data[indexPath.item].isExpanded = self?.data[indexPath.item].isExpanded == false
+    }
     return cell
   }
 }
