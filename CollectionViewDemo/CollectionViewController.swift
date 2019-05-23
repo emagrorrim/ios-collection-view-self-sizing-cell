@@ -22,6 +22,7 @@ class CollectionViewController: UIViewController {
     collectionView.register(UINib(nibName: "MyCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "MyCollectionViewCell")
     collectionView.delegate = self
     collectionView.dataSource = self
+    collectionView.prefetchDataSource = self
     (collectionView.collectionViewLayout as? CollectionViewListLayout)?.delegate = self
 
     let refreshControl = UIRefreshControl()
@@ -38,14 +39,13 @@ class CollectionViewController: UIViewController {
   }
 
   var isLoading: Bool = false
-  var isFirstTime: Bool = true
+  var cachedHeight: [IndexPath: CGFloat] = [:]
+}
 
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    if isFirstTime {
-      isFirstTime = false
-      return
-    }
-    if scrollView.contentOffset.y + scrollView.bounds.height >= scrollView.contentSize.height && !isLoading {
+extension CollectionViewController: UICollectionViewDataSourcePrefetching {
+  func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+    let maxIndexPath = indexPaths.max() ?? IndexPath(item: 0, section: 0)
+    if maxIndexPath.item + 1 >= collectionView.numberOfItems(inSection: maxIndexPath.section) {
       isLoading = true
       self.data.append(contentsOf: DataProvider.data.map(Model.init))
       DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -56,8 +56,6 @@ class CollectionViewController: UIViewController {
       }
     }
   }
-
-  var cachedHeight: [IndexPath: CGFloat] = [:]
 }
 
 extension CollectionViewController: CollectionViewListLayoutDelegate {
