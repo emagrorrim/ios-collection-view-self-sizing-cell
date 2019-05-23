@@ -20,11 +20,6 @@ class MyCollectionViewCell: UICollectionViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     showMoreButton.addTarget(self, action: #selector(showMore), for: .touchUpInside)
-    NSLayoutConstraint.activate([
-      label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-      label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-      label.topAnchor.constraint(equalTo: contentView.topAnchor),
-    ])
   }
 
   @objc func showMore() {
