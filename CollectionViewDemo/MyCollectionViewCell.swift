@@ -15,7 +15,7 @@ class MyCollectionViewCell: UICollectionViewCell {
   private var cellWidth: CGFloat = 0
   var isExpanded: Bool = false
 
-  var didUpdate: () -> Void = {}
+  var didUpdate: (Bool) -> Void = { _ in }
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -29,7 +29,7 @@ class MyCollectionViewCell: UICollectionViewCell {
 
   @objc func showMore() {
     isExpanded = !isExpanded
-    didUpdate()
+    didUpdate(isExpanded)
   }
 
   func configureWidth(with constant: CGFloat) {
@@ -42,11 +42,12 @@ class MyCollectionViewCell: UICollectionViewCell {
   }
 
   override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-//    layoutAttributes.size = contentView.systemLayoutSizeFitting(CGSize(width: cellWidth, height: 0), withHorizontalFittingPriority: .required, verticalFittingPriority: .defaultLow)
-    layoutAttributes.size = label.sizeThatFits(CGSize(width: cellWidth, height: 0))
+    let autoAttributes = super.preferredLayoutAttributesFitting(layoutAttributes)
+    let size = contentView.systemLayoutSizeFitting(CGSize(width: cellWidth, height: 0), withHorizontalFittingPriority: .required, verticalFittingPriority: .defaultLow)
+    autoAttributes.frame = CGRect(origin: autoAttributes.frame.origin, size: size)
     if isExpanded {
-      layoutAttributes.size.height += 100
+      autoAttributes.size.height += 100
     }
-    return layoutAttributes
+    return autoAttributes
   }
 }
