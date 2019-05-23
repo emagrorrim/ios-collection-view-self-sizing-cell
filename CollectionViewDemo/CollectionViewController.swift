@@ -48,7 +48,7 @@ extension CollectionViewController: UICollectionViewDataSourcePrefetching {
     if maxIndexPath.item + 1 >= collectionView.numberOfItems(inSection: maxIndexPath.section) {
       isLoading = true
       self.data.append(contentsOf: DataProvider.data.map(Model.init))
-      DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
         self.collectionView.reloadData()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
           self.isLoading = false

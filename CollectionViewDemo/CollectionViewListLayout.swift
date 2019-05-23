@@ -107,24 +107,25 @@ class CollectionViewListLayout: UICollectionViewLayout {
     attributes.frame.size.height += contentHeightAdjustment
     attributes.frame.size.width = collectionView.bounds.width
 
-    context.invalidateItems(at: [attributes.indexPath])
+    var indexPaths: [IndexPath] = []
+    indexPaths.append(attributes.indexPath)
 
     cachedAttributes[originalAttributes.indexPath.item] = attributes
 
     (originalAttributes.indexPath.item + 1 ..< collectionView.numberOfItems(inSection: 0)).forEach { index in
       let itemLayoutAttributes = self.cachedAttributes[index]
       itemLayoutAttributes.frame.origin.y += contentHeightAdjustment
-      context.invalidateItems(at: [itemLayoutAttributes.indexPath])
+      indexPaths.append(itemLayoutAttributes.indexPath)
     }
 
     context.contentSizeAdjustment = CGSize(width: 0, height: contentHeightAdjustment)
+    context.invalidateItems(at: indexPaths)
     contentBounds.size.height += contentHeightAdjustment
 
     return context
   }
 
   override func shouldInvalidateLayout(forPreferredLayoutAttributes preferredAttributes: UICollectionViewLayoutAttributes, withOriginalAttributes originalAttributes: UICollectionViewLayoutAttributes) -> Bool {
-    guard let collectionView = collectionView else { return false }
-    return preferredAttributes.frame.size.height != originalAttributes.frame.size.height || originalAttributes.size.width != collectionView.bounds.width
+    return preferredAttributes.size.height != originalAttributes.size.height
   }
 }
