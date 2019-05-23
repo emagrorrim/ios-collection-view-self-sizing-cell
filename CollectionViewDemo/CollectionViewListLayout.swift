@@ -1,28 +1,20 @@
 //
-//  Copyright © 2016 XinGuo. All rights reserved.
+//  CollectionViewListLayout.swift
+//  CollectionViewDemo
+//
+//  Created by Xin Guo  on 2019/5/23.
+//  Copyright © 2019 XinGuo. All rights reserved.
 //
 
 import UIKit
 
-struct Model {
-  let name: String
-  var isExpanded: Bool = false
-
-  init(name: String) {
-    self.name = name
-  }
-}
-
-extension UIViewController: UITableViewDelegate {
-}
-
-protocol ListLayoutDelegate: class {
+protocol CollectionViewListLayoutDelegate: class {
   func collectionView(_ collectionView: UICollectionView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat
 }
 
-class MyFlowLayout: UICollectionViewLayout {
+class CollectionViewListLayout: UICollectionViewLayout {
 
-  weak var delegate: ListLayoutDelegate? = nil
+  weak var delegate: CollectionViewListLayoutDelegate? = nil
 
   var contentBounds = CGRect.zero
   var cachedAttributes = [UICollectionViewLayoutAttributes]()
@@ -134,84 +126,5 @@ class MyFlowLayout: UICollectionViewLayout {
   override func shouldInvalidateLayout(forPreferredLayoutAttributes preferredAttributes: UICollectionViewLayoutAttributes, withOriginalAttributes originalAttributes: UICollectionViewLayoutAttributes) -> Bool {
     guard let collectionView = collectionView else { return false }
     return preferredAttributes.frame.size.height != originalAttributes.frame.size.height || originalAttributes.size.width != collectionView.bounds.width
-  }
-}
-
-class ViewController: UIViewController {
-  @IBOutlet var collectionView: UICollectionView!
-  private var data = DataProvider.data.map(Model.init)
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    collectionView.register(UINib(nibName: "MyCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "MyCollectionViewCell")
-    collectionView.delegate = self
-    collectionView.dataSource = self
-    (collectionView.collectionViewLayout as? MyFlowLayout)?.delegate = self
-
-    let refreshControl = UIRefreshControl()
-    refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-    collectionView.refreshControl = refreshControl
-  }
-
-  @objc private func refresh() {
-    data = DataProvider.data.map(Model.init)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-      self?.collectionView.reloadData()
-      self?.collectionView.refreshControl?.endRefreshing()
-    }
-  }
-
-  var isLoading: Bool = false
-  var isFirstTime: Bool = true
-
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    if isFirstTime {
-      isFirstTime = false
-      return
-    }
-    if scrollView.contentOffset.y + scrollView.bounds.height >= scrollView.contentSize.height && !isLoading {
-      isLoading = true
-      self.data.append(contentsOf: DataProvider.data.map(Model.init))
-      DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-        self.collectionView.reloadData()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-          self.isLoading = false
-        }
-      }
-    }
-  }
-
-  var cachedHeight: [IndexPath: CGFloat] = [:]
-
-  func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    let height = cell.bounds.height
-    cachedHeight[indexPath] = height
-  }
-}
-
-extension ViewController: ListLayoutDelegate {
-  func collectionView(_ collectionView: UICollectionView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-    return cachedHeight[indexPath] ?? 50
-  }
-}
-
-extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return data.count
-  }
-  
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyCollectionViewCell", for: indexPath) as? MyCollectionViewCell else {
-      return UICollectionViewCell()
-    }
-    cell.configureWidth(with: collectionView.bounds.width)
-    cell.label.text = "\(indexPath.item) \n" + data[indexPath.item].name
-    cell.contentView.backgroundColor = .cyan
-    cell.isExpanded = data[indexPath.item].isExpanded
-    cell.didUpdate = { [weak self] newState in
-      self?.data[indexPath.item].isExpanded = newState
-      self?.collectionView.reloadData()
-    }
-    return cell
   }
 }
